@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from './views/Main.vue'
 import Login from './views/Login.vue'
+import Dashboard from '@/views/content/Dashboard.vue';
+import Customers from '@/views/content/Customers.vue';
 
 Vue.use(VueRouter)
 
@@ -9,7 +11,17 @@ const routes = [
   {
     path: '*',
     name: 'main',
-    component: Main
+    component: Main,
+    children: [
+        {         
+            path: 'dashboard',
+            component: Dashboard
+        },
+        {         
+            path: 'customers',
+            component: Customers
+        }
+    ]
   },
   {
     path: '/login',
