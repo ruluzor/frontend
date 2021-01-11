@@ -4,6 +4,7 @@ import Main from './views/Main.vue'
 import Login from './views/Login.vue'
 import Dashboard from '@/views/content/Dashboard.vue';
 import Customers from '@/views/content/Customers.vue';
+import ConstructionInfoReader from '@/views/content/ConstructionInfoReader.vue';
 
 Vue.use(VueRouter)
 
@@ -20,6 +21,10 @@ const routes = [
         {         
             path: 'customers',
             component: Customers
+        },
+        {         
+            path: 'constructionInfoReader',
+            component: ConstructionInfoReader
         }
     ]
   },
