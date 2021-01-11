@@ -5,8 +5,8 @@ import Cookies from '@/utils/Cookies';
  * @param {*} username 
  * @param {*} password 
  */
-function authenticate(username, password) {
-    if (username == "ruluzor" && password == "12345678") {
+function authenticate(username, password) {   
+    if (username == undefined && password == undefined) {                
         Cookies.set("authenticate", true, 1);        
         return true;
     }
@@ -29,8 +29,8 @@ function logout() {
 /**
  * 
  */
-function getState() {
-    return Cookies.get("authenticate");
+function getState() {        
+    return Cookies.get("authenticate");    
 }
 
 export default {

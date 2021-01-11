@@ -24,8 +24,8 @@ export default {
          * @param {*} state 
          * @param {*} authenticate 
          */
-        authenticate(state, authenticate) {                                
-            state.authenticate = authenticate;
+        authenticate(state, value) {                                
+            state.authenticate = value;
         },
 
         /**
@@ -46,22 +46,22 @@ export default {
          * @param {*} username 
          * @param {*} password 
          */
-        authenticate(context, payload) {            
-            if (Authenticate.authenticate(payload.username, payload.password)) {
-                context.commit('authenticate', payload);                
+        authenticate(context, payload) {                     
+            if (Authenticate.authenticate(payload.username, payload.password)) {                
+                context.commit('authenticate', Authenticate.getState());                
             }            
-            router.push('main');
+            router.push('/main/dashboard');
         },
 
         /**
          * 
          * @param {*} param0 
          */
-        logout({commit}) {            
+        logout(context) {            
             if (Authenticate.logout()) {
-                commit('authenticate', false);                
+                context.commit('authenticate', Authenticate.getState());                         
             }            
-            router.push('login');
+            router.push('/login');
         }
     }
 }
