@@ -8,7 +8,7 @@
                     </h3>                                                                    
                 </v-col>
             </v-row>                   
-            <r-construction-info></r-construction-info>  
+            <r-construction-info></r-construction-info>              
         </v-container>                     
     </div>    
 </template>
@@ -27,8 +27,14 @@ export default {
         /**
          * 
          */
-        ...mapActions('Importer', [ Actions.IMPORT_CONSTRUCTIONINFO_FILE]),                
+        ...mapActions('Importer', [Actions.IMPORT_CONSTRUCTIONINFO_FILE]),                
 
+        /**
+         * 
+         */
+        importConstructionInfoFile(e) {            
+            this.$store.dispatch('Importer/' + Actions.IMPORT_CONSTRUCTIONINFO_FILE, e );
+        }
     }    
 }
 </script>

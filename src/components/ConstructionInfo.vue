@@ -1,6 +1,9 @@
 <template>
     <div>
         <v-row v-if="constructionInfoDescriptor != null">
+            <v-col class="col-12 pt-5" align="right">
+                <v-btn class="btn btn-primary" @click="removeConstructionInfo">Eliminar .constructionInfo</v-btn>
+            </v-col>
             <v-col>
                 <v-list-item two-line class="elevation-1">
                     <v-list-item-content>
@@ -28,6 +31,9 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+import { Mutations } from '@/modules/Importer';
+
 export default {
     data:() => ({        
         headers: [            
@@ -36,11 +42,12 @@ export default {
             { text: 'Color', value: 'toothColor', width: 100 },          
             { text: 'STL', value: 'matrixImplantGeometryTargetOutputConstructionFile' },
             { text: 'Implante', value: 'implantType' },
-            { text: 'Diametro Tornillo', value: 'screwDiameter' }            
+            { text: 'Diametro Tornillo', value: 'screwDiameter' },            
+            { text: 'Librería', value: 'implantLibraryEntryDescritor' }            
         ]
     }),        
     computed: {
-
+        ...mapMutations('Importer', [Mutations.REMOVE_CONSTRUCTIONINFO_DESCRIPTOR, Mutations.REMOVE_CONSTRUCTIONINFO_FILE]),
         /**
          * 
          */
@@ -48,5 +55,16 @@ export default {
             return this.$store.state.Importer.constructionInfoDescriptor;            
         },
     },
+    methods: {
+
+        /**
+         * Se encarga de eliminar el objeto constructionInfo llamando a las mutaciones correspondientes.
+         * Esta acción elimina el descriptor y el fichero correspondiente.
+         */
+        removeConstructionInfo() {
+            this.$store.commit('Importer/' + Mutations.REMOVE_CONSTRUCTIONINFO_DESCRIPTOR);
+            this.$store.commit('Importer/' + Mutations.REMOVE_CONSTRUCTIONINFO_FILE);
+        }
+    }
 }
 </script>

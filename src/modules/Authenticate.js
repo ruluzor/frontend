@@ -1,6 +1,14 @@
 import Authenticate from '@/api/Authenticate';
-import { User } from '@/model/User';
 import router from '@/router';
+
+export const Mutations = {
+    AUTHENTICATE: "Authenticate"        
+}
+
+export const Actions = {
+    AUTHENTICATE: "Authenticate", 
+    LOGOUT: "Logout", 
+}
 
 export default {
     namespaced: true,
@@ -9,57 +17,36 @@ export default {
         /**
          * 
          */
-        authenticate: Authenticate.getState(),
-
-        /**
-         * 
-         */
-        user: new User()
+        authenticate: Authenticate.getState(),                
         
     },
     mutations: {
 
         /**
-         * 
-         * @param {*} state 
-         * @param {*} authenticate 
+         * Actualiza el estado de la autentificación de la sesión.
          */
-        authenticate(state, value) {                                
+        [Mutations.AUTHENTICATE] (state, value) {                                
             state.authenticate = value;
-        },
-
-        /**
-         * 
-         * @param {*} state 
-         * @param {*} value 
-         */
-        setUser(state, value) {
-            state.user.username = value.username;
-            state.user.password = value.password;
-        }
+        },        
     },
     actions: {
 
         /**
-         * Se encarga de autentificar la sesión llamando al modulo 'api' correspondiente.
-         * @param {*} param0 
-         * @param {*} username 
-         * @param {*} password 
+         * Se encarga de autentificar la sesión llamando al modulo 'api' correspondiente.         
          */
-        authenticate(context, payload) {                     
+        [Actions.AUTHENTICATE] ({commit}, payload) {                     
             if (Authenticate.authenticate(payload.username, payload.password)) {                
-                context.commit('authenticate', Authenticate.getState());                
+                commit(Mutations.AUTHENTICATE, Authenticate.getState());                
             }            
             router.push('/main/dashboard');
         },
 
         /**
-         * 
-         * @param {*} param0 
+         * Se encarga de salir de la sesión llamando al módulo 'api' correspondiente.         
          */
-        logout(context) {            
+        [Actions.LOGOUT]({commit}) {            
             if (Authenticate.logout()) {
-                context.commit('authenticate', Authenticate.getState());                         
+                commit(Mutations.AUTHENTICATE, Authenticate.getState());                         
             }            
             router.push('/login');
         }

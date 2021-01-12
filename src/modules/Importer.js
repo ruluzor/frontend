@@ -2,11 +2,13 @@ import { ConstructionInfoDescriptor, ToothDescriptor } from '@/model/Constructio
 
 export const Mutations = {
     ADD_CONSTRUCTIONINFO_DESCRIPTOR: "AddConstructionInfoDescriptor",    
-    ADD_CONSTRUCTIONINFO_FILE: "AddConstructionInfoFile"
+    REMOVE_CONSTRUCTIONINFO_DESCRIPTOR: "RemoveConstructionInfoDescriptor",    
+    ADD_CONSTRUCTIONINFO_FILE: "AddConstructionInfoFile",    
+    REMOVE_CONSTRUCTIONINFO_FILE: "RemoveConstructionInfoFile"
 }
 
 export const Actions = {
-    IMPORT_CONSTRUCTIONINFO_FILE: "importConstructionInfoFile",
+    IMPORT_CONSTRUCTIONINFO_FILE: "ImportConstructionInfoFile",
 }
 
 export default {
@@ -18,17 +20,31 @@ export default {
     mutations: {
 
         /**
-         *                   
+         * Añade el descriptor de constructionInfo al estado.                  
          */
         [Mutations.ADD_CONSTRUCTIONINFO_DESCRIPTOR] (state, constructionInfoDescriptor) {            
             state.constructionInfoDescriptor = constructionInfoDescriptor;
         },
 
         /**
-         * 
+         * Elimina el descriptor del constructionInfo.                  
+         */
+        [Mutations.REMOVE_CONSTRUCTIONINFO_DESCRIPTOR] (state) {            
+            state.constructionInfoDescriptor = null;
+        },
+
+        /**
+         * Añade el fichero en formato 'text/xml' ya analizado del constructionInfo al estado.
          */
         [Mutations.ADD_CONSTRUCTIONINFO_FILE] (state, constructionInfoFile) {
             state.constructionInfoFile = constructionInfoFile;            
+        },        
+
+        /**
+         * Elimina el fichero constructionInfo del estado.
+         */
+        [Mutations.REMOVE_CONSTRUCTIONINFO_FILE] (state) {
+            state.constructionInfoFile = null;            
         }
     },
     actions: {
@@ -46,7 +62,7 @@ export default {
 }
 
 /**
- * 
+ * Obtiene una promesa del primer fichero del evento dragOver a través del objeto dataTransfer.
  */
 function getConstructionInfoFile(e) {
     return new Promise(resolve => {
@@ -62,7 +78,8 @@ function getConstructionInfoFile(e) {
 }
 
 /**
- * 
+ * Obtiene el objeto 'ConstructionInfoDescriptor' a partir del fichero correspondiente en 
+ * formato 'text/xml'.
  */
 function getConstructionInfoDescriptor(constructionInfoFile) {
     var parser = new DOMParser();
@@ -74,12 +91,12 @@ function getConstructionInfoDescriptor(constructionInfoFile) {
 }
 
 /**
- *  
+ * Función de ayuda para obtener el listado de dientes del objeto xmlDoc de tipo 'Document'.
  */
 function getTeeth(xmlDoc) {
     var result = [];
-    var teeth = xmlDoc.getElementsByTagName("Tooth");    
-    teeth.forEach(x => {                                
+    var teeth = xmlDoc.getElementsByTagName("Tooth");        
+    teeth.forEach(x => {                                        
         var tooth = new ToothDescriptor({                     
             number: x.getElementsByTagName("Number")[0].childNodes[0] != undefined ? x.getElementsByTagName("Number")[0].childNodes[0].nodeValue : null,
             reconstructionType: x.getElementsByTagName("ReconstructionType")[0] != undefined ? x.getElementsByTagName("ReconstructionType")[0].childNodes[0].nodeValue : null,
@@ -93,21 +110,22 @@ function getTeeth(xmlDoc) {
             matrixImplantGeometryTargetOutputConstructionFile: x.getElementsByTagName("MatrixImplantGeometryTargetOutputConstructionFile")[0] != undefined ? x.getElementsByTagName("MatrixImplantGeometryTargetOutputConstructionFile")[0].childNodes[0].nodeValue : null,
             // fileNameImplantGeometry:
             // implantGeometryFileHashSHA:
-            // implantLibraryEntryDescritor:
+            implantLibraryEntryDescritor: x.getElementsByTagName("ImplantLibraryEntryDescriptor")[0] != undefined ? x.getElementsByTagName("ImplantLibraryEntryDescriptor")[0].childNodes[0].nodeValue : null,
             // implantLibraryEntryDisplayInformation:
             // implantLibraryEntryWithInterface:
             // implantLibraryEntryWithPremillAbutmentCollider:
             // suggestedStrategy:
             toothColor: x.getElementsByTagName("ToothColor")[0] != undefined ? x.getElementsByTagName("ToothColor")[0].childNodes[0].nodeValue : null,
             // toothScanFileName:
-        });        
+        });                
         result.push(tooth);
     });  
     return result;          
 }
 
 /**
- *  
+ * Función de ayuda para obtenerla propiedad según su nombre de etiqueta a través 
+ * del objeto xmlDoc de tipo 'Document'.
  */
 function getInfoByTagName(xmlDoc, tagName) {
     return xmlDoc.getElementsByTagName(tagName)[0] != undefined ? xmlDoc.getElementsByTagName(tagName)[0].childNodes[0].nodeValue : null;
