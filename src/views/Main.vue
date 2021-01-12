@@ -1,36 +1,32 @@
 <template>
   <v-app>
-    <v-navigation-drawer app>
-      <!-- -->
-    </v-navigation-drawer>
-
+    <r-navigation-drawer></r-navigation-drawer>
     <v-app-bar app>
       <v-btn class="btn btn-sm btn-primary" @click="logout()">Salir</v-btn>
-    </v-app-bar>
-
-    <!-- Sizes your content based upon application components -->
+    </v-app-bar>    
     <v-main>
-      <!-- Provides the application the proper gutter -->
-      <v-container fluid>
-        <!-- If using vue-router -->
+      <v-container fluid>        
         <router-view></router-view>
       </v-container>
     </v-main>
-
-    <v-footer app>
-      <!-- -->
+    <v-footer app>      
     </v-footer>
   </v-app>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import NavigationDrawer from '@/components/NavigationDrawer';
+
 export default {
   name: "Main",
+  components: {
+      'r-navigation-drawer': NavigationDrawer
+  },
   computed: {
     authenticate() {
       return this.$store.state.Authenticate.authenticate;
-    },
+    }
   },
   mounted() {      
     if (this.authenticate === "false") {

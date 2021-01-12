@@ -1,27 +1,34 @@
 <template>
-    <div>
-        ConstructionInfo Reader 
-        <a @click="$router.push('/main/customers')">Ir a customers</a>
-        <div @drop.prevent="importConstructionInfoFile" @dragover.prevent align="center">
-            <h3 class="grey lighten-3 pa-10">
-                Arrastra tu archivo .contructionInfo aquí
-            </h3>                                                
-        </div>         
-        {{constructionInfoFile}}
+    <div>        
+        <v-container fluid>             
+            <v-row>
+                <v-col @drop.prevent="importConstructionInfoFile" @dragover.prevent align="center">                    
+                    <h3 class="grey lighten-3 pa-10">
+                        Arrastra tu archivo .contructionInfo aquí
+                    </h3>                                                                    
+                </v-col>
+            </v-row>                   
+            <r-construction-info></r-construction-info>  
+        </v-container>                     
     </div>    
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
-export default {
-    computed: {
-        constructionInfoFile() {
-            return this.$store.state.Importer.constructionInfoFile;
-        }
+import { mapActions } from 'vuex';
+import { Actions } from '@/modules/Importer';
+import ConstructionInfo from '@/components/ConstructionInfo';
+
+export default {    
+    components: {
+        'r-construction-info': ConstructionInfo
     },
     methods: {            
-        ...mapMutations('Importer', ['importConstructionInfoFile']),        
-    }
-    
+
+        /**
+         * 
+         */
+        ...mapActions('Importer', [ Actions.IMPORT_CONSTRUCTIONINFO_FILE]),                
+
+    }    
 }
 </script>
