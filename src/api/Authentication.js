@@ -1,36 +1,24 @@
-import Cookies from '@/utils/Cookies';
+import axios from 'axios';
+import environment from '../environment';
+import {header} from '@/utils/Headers';
+
+let url = environment.url(environment.types.backend);
 
 /**
- *
+ * Se encarga de iniciar sesión en el sistema.
  */
-function authenticate(username, password) {   
-    if (username == undefined && password == undefined) {                
-        Cookies.set("authenticate", true, 1);        
-        return true;
-    }
-    else {
-        Cookies.set("authenticate", false, 1);        
-        return false;
-    }
+async function login(data) {        
+    return await axios.post(url + '/api/authentication/login', data);    
 }
 
-/**
- * 
- */
-function logout() {    
-    Cookies.set("authenticate", false, 1);    
-    return true;
-}
-
-/**
- * 
- */
-function getState() {        
-    return Cookies.get("authenticate");    
+// /**
+//  * Se encarga de obtener el status del token.
+//  */
+async function payload(data) {               
+    return await axios.post(url + '/api/authentication/payload', data, header);    
 }
 
 export default {
-    authenticate: authenticate,
-    logout: logout,
-    getState: getState
+    login: login,
+    payload: payload
 }
