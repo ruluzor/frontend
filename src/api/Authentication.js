@@ -1,9 +1,7 @@
 import Cookies from '@/utils/Cookies';
 
 /**
- * 
- * @param {*} username 
- * @param {*} password 
+ *
  */
 function authenticate(username, password) {   
     if (username == undefined && password == undefined) {                
@@ -18,8 +16,6 @@ function authenticate(username, password) {
 
 /**
  * 
- * @param {*} username 
- * @param {*} password 
  */
 function logout() {    
     Cookies.set("authenticate", false, 1);    
