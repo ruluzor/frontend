@@ -1,8 +1,8 @@
 <template>
-    <v-app>
+    <v-app v-if="authenticated">
         <r-navigation-drawer></r-navigation-drawer>
         <v-app-bar app>
-            <v-btn class="btn btn-sm btn-primary" @click="Logout()">Salir</v-btn>
+            <v-btn class="btn btn-sm btn-primary" @click="logout()">Salir</v-btn>
         </v-app-bar>
         <v-main>
             <v-container fluid>
@@ -15,25 +15,33 @@
 
 <script>
 import { mapActions } from "vuex";
+import { Actions } from '@/modules/Authentication';
 import NavigationDrawer from "@/components/NavigationDrawer";
 
 export default {
     name: "Main",    
     components: {
         "r-navigation-drawer": NavigationDrawer,
-    },
-    mounted() {
-        if (this.authenticate === "false") {
-            this.$router.push("/login");
+    },    
+    computed: {
+        authenticated() {
+            return this.$store.state.Authentication.authenticated;
         }
     },
-    computed: {
-        authenticate() {
-            return this.$store.state.Authenticate.authenticate;
-        },
+    created() {        
+        this.$store.dispatch('Authentication/' + Actions.INIT);          
     },    
+
     methods: {
-        ...mapActions("Authenticate", ["Logout"]),
+
+        /**
+         * 
+         */
+        ...mapActions("Authentication", [Actions.INIT, Actions.LOGOUT]),
+
+        logout() {
+            this.$store.dispatch("Authentication/" + Actions.LOGOUT)
+        }
     },
 };
 </script>

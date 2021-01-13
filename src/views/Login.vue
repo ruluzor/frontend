@@ -19,11 +19,6 @@ export default {
     components: {
         'r-login': Login
     },
-    computed: {
-        username() {
-            return this.$store.state.Authenticate.username;
-        }
-    }    
 
 }
 </script>

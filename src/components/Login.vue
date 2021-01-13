@@ -12,7 +12,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
-import { Actions } from '@/modules/Authenticate';
+import { Actions } from '@/modules/Authentication';
 
 import { User } from '@/model/User';
 
@@ -21,13 +21,14 @@ export default {
         user: new User()
     }),    
     methods: {
-        ...mapActions('Authenticate', [Actions.AUTHENTICATE]),
+        ...mapActions('Authentication', [Actions.AUTHENTICATE]),
 
         /**
          * Se encarga de autentificar un usuario llamando a la acción correspondiente.
          */
         authenticate() {
-            this.$store.dispatch('Authenticate/' + Actions.AUTHENTICATE, this.user);
+            this.user.eMail = this.user.username;
+            this.$store.dispatch('Authentication/' + Actions.AUTHENTICATE, this.user);
         }
     }
 }

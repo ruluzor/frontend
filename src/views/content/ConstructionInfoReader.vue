@@ -1,16 +1,14 @@
-<template>
-    <div>        
-        <v-container fluid>             
-            <v-row>
-                <v-col @drop.prevent="importConstructionInfoFile" @dragover.prevent align="center">                    
-                    <h3 class="grey lighten-3 pa-10">
-                        Arrastra tu archivo .contructionInfo aquí
-                    </h3>                                                                    
-                </v-col>
-            </v-row>                   
-            <r-construction-info></r-construction-info>              
-        </v-container>                     
-    </div>    
+<template>    
+    <v-container fluid>             
+        <v-row>
+            <v-col @drop.prevent="importConstructionInfoFile" @dragover.prevent align="center">                    
+                <h3 class="grey lighten-3 pa-10">
+                    Arrastra tu archivo .contructionInfo aquí
+                </h3>                                                                    
+            </v-col>
+        </v-row>                   
+        <r-construction-info></r-construction-info>              
+    </v-container>                         
 </template>
 
 <script>
