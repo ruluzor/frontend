@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Authenticate from '@/modules/Authenticate';
+import Authentication from '@/modules/Authentication';
 import Importer from '@/modules/Importer';
 import Navigation from '@/modules/Navigation';
+import Entities from '@/modules/Entities';
 
 Vue.use(Vuex)
 
@@ -14,8 +15,9 @@ export default new Vuex.Store({
     actions: {
     },
     modules: {
-        Authenticate,
+        Authentication,
         Importer,
-        Navigation
+        Navigation,
+        Entities
     }
 })
