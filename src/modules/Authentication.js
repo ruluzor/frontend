@@ -1,9 +1,13 @@
 import Authentication from '@/api/Authentication';
 import router from '@/router';
 import Cookies from '@/utils/Cookies';
+import Errors from '@/utils/Errors';
+import Payloads from '@/utils/Payloads';
 
 export const Mutations = {
-    AUTHENTICATE: "Authenticate"        
+    AUTHENTICATE: "Authenticate",
+    SET_ERROR: "SetError",        
+    SET_PAYLOAD: "SetPayload",       
 }
 
 export const Actions = {
@@ -21,7 +25,9 @@ export default {
          */
         token: null,    
         expiration: null,    
-        authenticated: false,        
+        authenticated: false,     
+        error: null,
+        payload: null,   
         
     },
     mutations: {
@@ -40,42 +46,50 @@ export default {
                 state.expiration = value.expiration;
                 state.authenticated = true;
             }                              
-        },        
+        },   
+
+        /**
+         * Actualiza el estado del payload.
+         */
+        [Mutations.SET_PAYLOAD] (state, payload) {     
+            state.payload = payload;                              
+        },  
+
+        /**
+         * Actualiza el estado del error de la autentificación
+         */
+        [Mutations.SET_ERROR] (state, error) {     
+            state.error = error;                              
+        },    
     },
     actions: {
 
         /**
-         * 
+         * Se encarga de iniciar la sesión del sistema.
          */
         [Actions.INIT]({commit}) {                                    
-            var payload = {
-                token: Cookies.get('token'),
-                expiration: Cookies.get('expiration')                                                      
-            }            
-            Authentication.payload(payload).then((payload) => {                
+            var payload = Payloads.getPayloadFromCookies();  
+            Authentication.authenticate(payload).then((response) => {               
+                commit(Mutations.SET_PAYLOAD, response.data);
                 commit(Mutations.AUTHENTICATE, payload);                
             })
             .catch((error) => {
-                console.error(error);
-                router.push('/login');    
+                Errors.manage(error);                  
             });                                     
         },
 
         /**
          * Se encarga de autentificar la sesión llamando al modulo 'api' correspondiente.         
          */
-        async [Actions.AUTHENTICATE] ({commit}, user) {                    
-            try {                
-                Authentication.login(user).then((response) => {                    
-                    Cookies.set('token', response.data.token, 1);
-                    Cookies.set('expiration', response.data.expiration, 1);
-                    commit(Mutations.AUTHENTICATE, response.data);                                                        
-                    router.push('/main/dashboard');
-                });                                
-            }   
-            catch (ex) {
-                router.push('/login');    
-            }                                  
+        async [Actions.AUTHENTICATE] ({commit}, user) {                                              
+            Authentication.login(user).then((response) => {                                    
+                Payloads.setPayloadToCookies({token: response.data.token, expiration: response.data.expiration });
+                commit(Mutations.AUTHENTICATE, response.data);                                                        
+                router.push('/main/dashboard');
+            })
+            .catch((error) => {                                                          
+                Errors.manage(error, "No se puede iniciar la sesión correctamente.");                  
+            });                                                                         
         },
 
         /**

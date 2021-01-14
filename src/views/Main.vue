@@ -9,7 +9,13 @@
                 <router-view></router-view>
             </v-container>
         </v-main>
-        <v-footer app> </v-footer>
+        <v-footer app>             
+            <v-row>                
+                <v-col align="right" class="caption">
+                    Se ha iniciado sesión como "{{ payload.username }}" a las {{ expiration }}. Puedes contactar con soporte en <a href="mailto://developer@soadco.com">developer@soadco.com</a>. Archimedes Platform&trade; 2020.
+                </v-col>
+            </v-row>                 
+        </v-footer>
     </v-app>
 </template>
 
@@ -26,6 +32,13 @@ export default {
     computed: {
         authenticated() {
             return this.$store.state.Authentication.authenticated;
+        },
+        payload() {
+            console.log(this.$store.state.Authentication.payload)
+            return this.$store.state.Authentication.payload;
+        },
+        expiration() {            
+            return new Date(this.$store.state.Authentication.expiration).toLocaleTimeString( 'es-ES', {timeZone: 'UTC'})
         }
     },
     created() {        

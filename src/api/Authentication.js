@@ -11,14 +11,14 @@ async function login(data) {
     return await axios.post(url + '/api/authentication/login', data);    
 }
 
-// /**
-//  * Se encarga de obtener el status del token.
-//  */
-async function payload(data) {               
-    return await axios.post(url + '/api/authentication/payload', data, header);    
+/**
+ * Se encarga de autentificar el payload correspondiente.
+ */
+async function authenticate(data) {               
+    return await axios.post(url + '/api/authentication/authenticate', data, header);    
 }
 
 export default {
     login: login,
-    payload: payload
+    authenticate: authenticate
 }
