@@ -13,6 +13,13 @@ async function selectMultiples(size) {
 }
 
 /**
+ * Se encarga de filtrar multiples clientes.
+ */
+async function filterMultiples(data) {           
+    return await axios.post(url + '/api/customers/filter/multiples', data, header);    
+}
+
+/**
  * Se encarga de crear un nuevo cliente.
  */
 async function add(model) {            
@@ -35,6 +42,7 @@ async function removeRange(models) {
 
 export default {
     selectMultiples: selectMultiples,
+    filterMultiples: filterMultiples,
     add: add,
     update: update,
     removeRange: removeRange
