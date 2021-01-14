@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 import Authentication from '@/modules/Authentication';
 import Importer from '@/modules/Importer';
 import Navigation from '@/modules/Navigation';
-import Entities from '@/modules/Entities';
 
 Vue.use(Vuex)
 
@@ -17,7 +16,6 @@ export default new Vuex.Store({
     modules: {
         Authentication,
         Importer,
-        Navigation,
-        Entities
+        Navigation
     }
 })
