@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import Authentication from '@/modules/Authentication';
 import Importer from '@/modules/Importer';
 import Navigation from '@/modules/Navigation';
+import Customers from '@/modules/Customers';
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     modules: {
         Authentication,
         Importer,
-        Navigation
+        Navigation,
+        Customers
     }
 })
